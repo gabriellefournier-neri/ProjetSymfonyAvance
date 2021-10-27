@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Découvrir les articles
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<div class="example-wrapper">
+		<h1>
+			actus du site 👋
+		</h1>
+
+		<div class="example-wrapper">
+			<div id="actus">
+				{% for actu in actus %}
+					<figure class="article actu">
+						<div class="image"><img src="{{actu.image}}" alt="image-actu"/></div>
+						<figcaption>
+							<div class="date">
+								<span class="day">{{actu.createdAt | date('d')}}</span>
+								<span class="month">{{actu.createdAt | date('M')}}</span>
+							</div>
+							<h3>{{ actu.title }}</h3>
+							<p>{{ actu.content | raw}}</p>
+						</figcaption>
+						<a href="{{path('blog_show',{id: actu.id})}}"></a>
+					</figure>
+				{% endfor %}
+
+			</div>
+
+
+		</div>
+
+
+	{% endblock %}

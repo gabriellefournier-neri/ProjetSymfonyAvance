@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cours Symfony Avancé Oct 2021!
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<div class="example-wrapper">
+		<h1>
+			Bienvenido !  👋
+		</h1>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+	</div>
+
+
+{% endblock %}

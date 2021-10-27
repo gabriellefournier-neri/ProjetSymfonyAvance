@@ -1,0 +1,5 @@
+key1: value1
+key2: value2
+key3:
+    valeur3.1: valeur3.1.1
+    valeur3.2: valeur3.2.1
