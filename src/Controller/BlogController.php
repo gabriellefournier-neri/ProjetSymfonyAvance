@@ -43,16 +43,16 @@ class BlogController extends AbstractController
     {
 
         // var_dump($logger);
-    	$logger->info('L\'utilisateur est sur la home page');
+        $logger->info('L\'utilisateur est sur la home page');
 
-    	// $message = $messageGenerator->getMessage();
-    	// On passe à présent par le service enfant DisplayMessage qui appellera le service
-    	// parent MessageGenerator
-    	$message = $displayMessage->getMessage();
-    	$this->addFlash('success', $message);
+        // $message = $messageGenerator->getMessage();
+        // On passe à présent par le service enfant DisplayMessage qui appellera le service
+        // parent MessageGenerator
+        $message = $displayMessage->getMessage();
+        $this->addFlash('success', $message);
 
         return $this->render('blog/home.html.twig', [
-        	'title' => 'HELLOOOOOOO',
+            'title' => 'HELLOOOOOOO',
         ]);
     }
 
@@ -75,32 +75,52 @@ class BlogController extends AbstractController
     }
 
 
+
+
+
     /**
      * @Route("/Ajouter-un-article", name="create")
      */
-    public function create() : Response
+    public function create(): Response
     {
-        return $this->render('blog/create.html.twig');
+        $article = new Article();
+
+        //on crée un objet formulaire lié à l'article et on ajoute les champs souhaités
+        $form = $this->createFormBuilder($article)
+            ->add('title')
+            ->add('content')
+            ->add('image')
+            ->getForm();
+
+        return $this->render('blog/create.html.twig', [
+            'formArticle' => $form->createView() // on passe à twig le resultat via la function creatview()
+        ]);
     }
+
+
+
+
+
+
 
     /**
      * @Route("/Actus", name="actus")
      */
-    public function actu() : Response
+    public function actu(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Actu::class);
-        
+
         $actus = $repository->findAll();
 
         return $this->render('blog/actus.html.twig', [
-            'actus' => $actus 
+            'actus' => $actus
         ]);
     }
 
     /**
      * @Route("/debug", name="blog_debug")
      */
-    public function __invoke(ChainDebugger $chainDebugger):Response       
+    public function __invoke(ChainDebugger $chainDebugger): Response
     {
         $array = [
             'key1' => 'value1',
@@ -108,14 +128,14 @@ class BlogController extends AbstractController
             'key3' => ['valeur3.1' => 'valeur3.1.1', 'valeur3.2' => 'valeur3.2.1'],
         ];
 
-        try{
+        try {
             $yaml = Yaml::dump($array);
             file_put_contents('../config/test.yaml', $yaml);
         } catch (ParseException $e) {
             printf("Unable to parse the YAML string: %s", $e->getMessage());
         }
-        
-        
+
+
         // $chainDebugger->debug();
 
         // try{
@@ -144,7 +164,6 @@ class BlogController extends AbstractController
 
             //si on a pas d'erreur => on affiche les données en sortie
             echo $process->getOutput();
-
         } catch (ProcessFailedException $exception) {
             //si on a une erreur => on affiche les données en sortie
             echo $exception->getMessage();
