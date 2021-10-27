@@ -5,8 +5,11 @@
 
 2. Créer un controller + template twig => php bin/console make:controller
 
-3. Créer un BDD + tables => php bin/console doctrine:database:create // php bin/console make:entity -> php bin/console make:migration -> php bin/console
-doctrine:migrations:migrate
+3. Créer un BDD + tables 
+  3.1 php bin/console doctrine:database:create
+  3.2 php bin/console make:entity
+  3.3 php bin/console make:migration
+  3.4 php bin/console doctrine:migrations:migrate
 
 4. Créer une fixture | installer le composant, créer la fixture, charger la fixture
   4.1 composer require orm-fixtures --dev
