@@ -12,10 +12,14 @@ use Psr\Log\LoggerInterface;
 use App\Service\MessageGenerator;
 use App\Service\DisplayMessage;
 use App\DependencyInjection\Compiler\ChainDebugger;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends AbstractController
 {
@@ -81,7 +85,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/Ajouter-un-article", name="create")
      */
-    public function create(): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $article = new Article();
 
@@ -90,7 +94,26 @@ class BlogController extends AbstractController
             ->add('title')
             ->add('content')
             ->add('image')
+            ->add('save', SubmitType::class, ['label' => 'Envoyer mon article'])
             ->getForm();
+
+        $form->handleRequest($request); //on recupere les données du formulaire
+        if ($form->isSubmitted() && $form->isValid()) { //si le formulaire est soumis et valide
+
+            //on recupere les données du formulaire
+            $article -> setCreatedAt(new \DateTime()); //on ajoute la date de creation
+
+            //on enregistre l'article dans la bdd
+
+            // $entityManager = $this->getDoctrine()->getManager();   ==> remplacé par l'injection de dependance (EntityManagerInterface $entityManager) au dessus.
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            //on redirige vers l'article crée
+            return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
+        }
+
+
 
         return $this->render('blog/create.html.twig', [
             'formArticle' => $form->createView() // on passe à twig le resultat via la function creatview()

@@ -15,8 +15,18 @@
 		</h1>
 
 		{{ form_start(formArticle) }}
-		{{ form_widget(formArticle) }}
+
+		{# {{ form_widget(formArticle) }}   ----> remplacé par ci-dessou pour gestion des champs #}
+        
+		{{ form_row(formArticle.title, {'attr' : {'placeholder' : 'Ici un titre '} }) }}
+
+		{{ form_row(formArticle.content, {'attr' : {'placeholder' : 'Ici un contenu '} }) }}
+
+		{{ form_row(formArticle.image, {'attr' : {'placeholder' : 'Ici une image '} }) }}
+
+
 		{{ form_end(formArticle) }}
+
 
 	</div>
 

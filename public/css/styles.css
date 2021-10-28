@@ -182,7 +182,12 @@ textarea#form_content{
     min-height: 350px;
     min-width: 550px;
 }
-
+button#form_save{
+    margin-top: 40px;
+    border-radius: 25px;
+    background-color: #7b8186;
+    border-color: white;
+}
 
 
 /****************************************************************** FOOTER
